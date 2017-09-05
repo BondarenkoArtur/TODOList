@@ -14,5 +14,6 @@ local.properties
 *.iws
 /out/
 .idea/
+.shelf/
 
 eclipse/
