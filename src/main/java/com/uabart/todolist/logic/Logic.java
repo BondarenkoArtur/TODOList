@@ -38,6 +38,7 @@ public class Logic implements GuiListener {
             Category categoryAny = holder.getCategories().get(0);
             stack.push(categoryAny);
             layout.showCategory(categoryAny, pages.peek());
+            selected = categoryAny;
         }
     }
 
