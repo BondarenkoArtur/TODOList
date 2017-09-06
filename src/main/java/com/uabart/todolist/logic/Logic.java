@@ -209,6 +209,19 @@ public class Logic implements GuiListener {
 
                     break;
 
+                case REFRESH:
+                    if (stack.isEmpty()) {
+                        layout.showMain(0);
+                    } else {
+                        Task task = stack.peek();
+                        if (task instanceof Category) {
+                            layout.showCategory((Category) task, pages.peek());
+                        } else {
+                            layout.showTask(task);
+                        }
+                    }
+                    break;
+
                 default:
                     break;
             }

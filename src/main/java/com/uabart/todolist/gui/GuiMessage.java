@@ -9,6 +9,7 @@ public enum GuiMessage {
     ADD_CATEGORY,
     DELETE,
     COMPLETE,
+    REFRESH,
     SELECT
 
 }

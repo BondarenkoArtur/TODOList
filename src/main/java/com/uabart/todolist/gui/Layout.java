@@ -31,6 +31,8 @@ import codechicken.nei.guihook.GuiContainerManager;
 public class Layout {
 
     private MyButton previousPage, nextPage, addTask, addCategory, back;
+    private MyButton showHideButton;
+    private boolean isMenuHidden = false;
     private List<Widget> toDraw;
     private HashMap<Task, List<Widget>> widgetMap;
     private TaskHolder holder;
@@ -59,13 +61,26 @@ public class Layout {
     public void init(GuiContainer gui, TaskHolder holder) {
         this.holder = holder;
 
-        boolean isShowCategories = Options.getInstance().showCategories();
+        isShowCategories = Options.getInstance().showCategories();
 
         boolean edgeAlign = true;
 //		boolean edgeAlign = NEIClientConfig.getBooleanSetting("options.edge-align buttons");
         int offsetx = edgeAlign ? 0 : 3;
 
         cztLalka = new Label("czt lalka", false);
+
+        showHideButton = new MyButton("ToDo"){
+            @Override
+            public boolean onButtonPress(boolean b) {
+                isMenuHidden = !isMenuHidden;
+                sendMessage(GuiMessage.REFRESH);
+                return true;
+            }
+        };
+        showHideButton.x = 0;
+        showHideButton.y = 0;
+        showHideButton.w = showHideButton.contentWidth();
+        showHideButton.h = 20;
 
         previousPage = new MyButton("<") {
 
@@ -270,6 +285,11 @@ public class Layout {
         if (isShowCategories) {
             toDraw.add(back);
         }
+
+        if (isMenuHidden){
+            toDraw.clear();
+        }
+        toDraw.add(showHideButton);
     }
 
     public void showTask(final Task task) {
@@ -458,6 +478,11 @@ public class Layout {
 
         toDraw.add(back);
 
+        if (isMenuHidden){
+            toDraw.clear();
+        }
+        toDraw.add(showHideButton);
+
     }
 
     private void onClick(int mouseX, int mouseY, Task task, FieldIcon icon) {
@@ -534,6 +559,11 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addCategory);
+
+        if (isMenuHidden){
+            toDraw.clear();
+        }
+        toDraw.add(showHideButton);
 
     }
 
