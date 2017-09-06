@@ -10,7 +10,9 @@ import com.uabart.todolist.gui.components.FieldIcon;
 import com.uabart.todolist.gui.components.FieldMainName;
 import com.uabart.todolist.gui.components.MyButton;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -21,8 +23,10 @@ import codechicken.nei.Button;
 import codechicken.nei.ItemPanel;
 import codechicken.nei.Label;
 import codechicken.nei.LayoutManager;
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.TextField;
 import codechicken.nei.Widget;
+import codechicken.nei.guihook.GuiContainerManager;
 
 public class Layout {
 
@@ -280,18 +284,17 @@ public class Layout {
 
         FieldIcon icon = new FieldIcon(task) {
             @Override
+            public boolean handleClickExt(int mx, int my, int button) {
+                if (button == 2) {
+                    onClick(mx, my, task, this);
+                }
+                return super.handleClickExt(mx, my, button);
+            }
+
+            @Override
             public void onGuiClick(int mousex, int mousey) {
-                if (LayoutManager.itemPanel.contains(mousex, mousey) && changing) {
-                    ItemPanel.ItemPanelSlot item = LayoutManager.itemPanel.getSlotMouseOver(mousex, mousey);
-                    if (item != null) {
-                        ItemStack stack2 = item.item;
-                        task.setReference(stack2);
-
-                        if (task.getName().isEmpty() || task.getName().equals("Empty"))
-                            task.setName("Make " + (stack2.getDisplayName().substring(0, 1).matches("[aeiouAEIOU]") ? "an" : "a") + " " + stack2.getDisplayName());
-
-                        changing = false;
-                    }
+                if (LayoutManager.itemPanel.contains(mousex, mousey)) {
+                    onClick(mousex, mousey, task, this);
                 }
             }
         };
@@ -389,18 +392,17 @@ public class Layout {
 
                 FieldIcon subicon = new FieldIcon(sub) {
                     @Override
+                    public boolean handleClickExt(int mx, int my, int button) {
+                        if (button == 2) {
+                            onClick(mx, my, sub, this);
+                        }
+                        return super.handleClickExt(mx, my, button);
+                    }
+
+                    @Override
                     public void onGuiClick(int mousex, int mousey) {
-                        if (LayoutManager.itemPanel.contains(mousex, mousey) && changing) {
-                            ItemPanel.ItemPanelSlot item = LayoutManager.itemPanel.getSlotMouseOver(mousex, mousey);
-                            if (item != null) {
-                                ItemStack stack2 = item.item;
-                                sub.setReference(stack2);
-
-                                if (sub.getName().isEmpty() || sub.getName().equals("Empty"))
-                                    sub.setName("Make " + (stack2.getDisplayName().substring(0, 1).matches("[aeiouAEIOU]") ? "an" : "a") + " " + stack2.getDisplayName());
-
-                                changing = false;
-                            }
+                        if (LayoutManager.itemPanel.contains(mousex, mousey)) {
+                            onClick(mousex, mousey, sub, this);
                         }
                     }
                 };
@@ -456,6 +458,37 @@ public class Layout {
 
         toDraw.add(back);
 
+    }
+
+    private void onClick(int mouseX, int mouseY, Task task, FieldIcon icon) {
+        if (icon.changing)
+            if (LayoutManager.itemPanel.contains(mouseX, mouseY)) {
+                ItemPanel.ItemPanelSlot item = LayoutManager.itemPanel.getSlotMouseOver(mouseX, mouseY);
+                if (item != null) {
+                    ItemStack stack = item.item;
+                    task.setReference(stack);
+
+                    if (task.getName().isEmpty() || task.getName().equals("Empty"))
+                        task.setName(stack.getDisplayName());
+
+                    icon.changing = false;
+                }
+            } else {
+                Minecraft mc = NEIClientUtils.mc();
+                GuiContainer guiContainer = mc.currentScreen instanceof GuiContainer ? (GuiContainer) mc.currentScreen : null;
+                if (guiContainer != null) {
+                    Slot slot = GuiContainerManager.getSlotMouseOver(guiContainer);
+                    if (slot != null) {
+                        ItemStack stack = slot.getStack();
+                        task.setReference(stack);
+
+                        if (task.getName().isEmpty() || task.getName().equals("Empty"))
+                            task.setName(stack.getDisplayName());
+
+                        icon.changing = false;
+                    }
+                }
+            }
     }
 
     public void showMain(int currentPage) {

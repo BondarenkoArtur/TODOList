@@ -26,7 +26,7 @@ public class FieldIcon extends Widget implements TaskListener {
         super();
         this.task = task;
         this.task.setListener(this);
-		this.stack = task.getReference();
+        this.stack = task.getReference();
     }
 
     @Override
@@ -54,17 +54,19 @@ public class FieldIcon extends Widget implements TaskListener {
     @Override
     public boolean handleClick(int mousex, int mousey, int button) {
         switch (button) {
-		case 0:
-            if (stack != null && stack.getItem() != null) {
-				GuiCraftingRecipe.openRecipeGui("item", stack);}
-			changing = false;
-			return true;
+            case 0:
+                if (stack != null && stack.getItem() != null) {
+                    GuiCraftingRecipe.openRecipeGui("item", stack);
+                }
+                changing = false;
+                return true;
 
-		case 1:
-            if (stack != null && stack.getItem() != null) {
-				GuiUsageRecipe.openRecipeGui("item", stack);}
-			changing = false;
-			return true;
+            case 1:
+                if (stack != null && stack.getItem() != null) {
+                    GuiUsageRecipe.openRecipeGui("item", stack);
+                }
+                changing = false;
+                return true;
 
             case 2:
                 changing = !changing;
@@ -91,9 +93,9 @@ public class FieldIcon extends Widget implements TaskListener {
         if (contains(mx, my)) {
             if (stack != null && stack.getItem() != null) {
                 tooltip.add(stack.getDisplayName());
-				tooltip.add("Middle click to change");
-			} else
-            tooltip.add("Middle click to select an item");
+                tooltip.add("Middle click to change");
+            } else
+                tooltip.add("Middle click to select an item");
 
             if (changing)
                 tooltip.add("ESC to cancel");
@@ -103,6 +105,6 @@ public class FieldIcon extends Widget implements TaskListener {
 
     @Override
     public void update(Task task) {
-		this.stack = task.getReference();
+        this.stack = task.getReference();
     }
 }
