@@ -31,7 +31,14 @@ public class Logic implements GuiListener {
         this.layout = layout;
         this.holder = holder;
         layout.setListener(this);
-        layout.showMain(pages.peek());
+        boolean isShowCategories = Options.getInstance().showCategories();
+        if (isShowCategories) {
+            layout.showMain(pages.peek());
+        } else {
+            Category categoryAny = holder.getCategories().get(0);
+            stack.push(categoryAny);
+            layout.showCategory(categoryAny, pages.peek());
+        }
     }
 
     @Override

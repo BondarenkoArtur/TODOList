@@ -9,11 +9,16 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class Options {
 
+    public static final boolean DEFAULT_VALUE_COMPLETED_TASKS = true;
+    public static final boolean DEFAULT_VALUE_SHOW_CATEGORIES = true;
+    public static final int DEFAULT_VALUE_MAX_TASKS_ON_SCREEB = 5;
+    public static final int DEFAULT_VALUE_MAX_CATEGORIES = 6;
     private static Options instance;
     private Configuration config;
     private Property UI_show_completed_tasks;
     private Property UI_max_tasks_on_screen;
     private Property UI_max_categories_on_screen;
+    private Property UI_show_categories;
 
     public static Options getInstance() {
         return instance;
@@ -25,9 +30,10 @@ public class Options {
         instance.config.load();
 
         instance.config.addCustomCategoryComment("UI", "UI definitions");
-        instance.UI_show_completed_tasks = instance.config.get("UI", "showCompletedTasks", true, "If tasks that are already completed should be shown or not");
-        instance.UI_max_tasks_on_screen = instance.config.get("UI", "maximumTasksOnScreen", 5, "How many tasks should be displayed on the category screen");
-        instance.UI_max_categories_on_screen = instance.config.get("UI", "maximumCategoriesOnScreen", 6, "How many categories should be displayed on the main screen");
+        instance.UI_show_completed_tasks = instance.config.get("UI", "showCompletedTasks", DEFAULT_VALUE_COMPLETED_TASKS, "If tasks that are already completed should be shown or not");
+        instance.UI_max_tasks_on_screen = instance.config.get("UI", "maximumTasksOnScreen", DEFAULT_VALUE_MAX_TASKS_ON_SCREEB, "How many tasks should be displayed on the category screen");
+        instance.UI_max_categories_on_screen = instance.config.get("UI", "maximumCategoriesOnScreen", DEFAULT_VALUE_MAX_CATEGORIES, "How many categories should be displayed on the main screen");
+        instance.UI_show_categories = instance.config.get("UI", "showCategories", DEFAULT_VALUE_SHOW_CATEGORIES, "Should I show categories on just use Any category all the time");
 
         instance.config.save();
 
@@ -35,15 +41,19 @@ public class Options {
     }
 
     public boolean showCompletedTasks() {
-        return UI_show_completed_tasks.getBoolean(false);
+        return UI_show_completed_tasks.getBoolean(DEFAULT_VALUE_COMPLETED_TASKS);
+    }
+
+    public boolean showCategories() {
+        return UI_show_categories.getBoolean(DEFAULT_VALUE_SHOW_CATEGORIES);
     }
 
     public int getMaxTasksOnScreen() {
-        return UI_max_tasks_on_screen.getInt(7);
+        return UI_max_tasks_on_screen.getInt(DEFAULT_VALUE_MAX_TASKS_ON_SCREEB);
     }
 
     public int getMaxCategoriesOnScreen() {
-        return UI_max_categories_on_screen.getInt(8);
+        return UI_max_categories_on_screen.getInt(DEFAULT_VALUE_MAX_CATEGORIES);
     }
 
 }

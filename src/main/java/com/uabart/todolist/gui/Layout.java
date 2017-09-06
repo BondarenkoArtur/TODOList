@@ -33,6 +33,7 @@ public class Layout {
     private GuiListener listener;
     private boolean getFocus = false;
     private Label cztLalka;
+    private boolean isShowCategories;
 
     public Layout() {
         toDraw = new ArrayList<Widget>();
@@ -53,6 +54,8 @@ public class Layout {
 
     public void init(GuiContainer gui, TaskHolder holder) {
         this.holder = holder;
+
+        boolean isShowCategories = Options.getInstance().showCategories();
 
         boolean edgeAlign = true;
 //		boolean edgeAlign = NEIClientConfig.getBooleanSetting("options.edge-align buttons");
@@ -139,7 +142,7 @@ public class Layout {
     }
 
     public void showCategory(final Category category, int currentPage) {
-        // Cleaer current screen
+        // Clear current screen
         toDraw.clear();
 
         // alignment check
@@ -260,7 +263,9 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addTask);
-        toDraw.add(back);
+        if (isShowCategories) {
+            toDraw.add(back);
+        }
     }
 
     public void showTask(final Task task) {
