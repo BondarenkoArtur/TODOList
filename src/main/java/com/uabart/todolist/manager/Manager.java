@@ -12,30 +12,30 @@ public class Manager {
     private static TaskHolder holder;
     private static Logic logic;
 
-    public static void newInstances() {
-        layout = new Layout();
-        holder = new TaskHolder();
-        logic = new Logic();
-    }
-
     public static void init(GuiContainer gui) {
-        holder.init();
-        layout.init(gui, holder);
-        logic.init(layout, holder);
-    }
-
-    public static void finalizeInstances() {
+        getHolder().init();
+        getLayout().init(gui, getHolder());
+        getLogic().init(getLayout(), getHolder());
     }
 
     public static TaskHolder getHolder() {
+        if (holder == null){
+            holder = new TaskHolder();
+        }
         return holder;
     }
 
     public static Layout getLayout() {
+        if (layout == null){
+            layout = new Layout();
+        }
         return layout;
     }
 
     public static Logic getLogic() {
+        if (logic == null){
+            logic = new Logic();
+        }
         return logic;
     }
 

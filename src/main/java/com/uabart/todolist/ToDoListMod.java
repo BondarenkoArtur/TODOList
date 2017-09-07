@@ -91,7 +91,6 @@ public class ToDoListMod {
             dir.mkdirs();
             server = new File(dir, serverName);
 
-            Manager.newInstances();
             DrawHandler.init = true;
             wasLoaded = true;
 
