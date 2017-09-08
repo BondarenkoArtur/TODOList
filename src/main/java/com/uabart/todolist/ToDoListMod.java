@@ -9,7 +9,6 @@ import com.uabart.todolist.manager.Manager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -28,7 +27,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.RegistryDelegate;
 
 @Mod(modid = ToDoListMod.MODID, version = ToDoListMod.VERSION)
 public class ToDoListMod {
@@ -87,7 +85,7 @@ public class ToDoListMod {
                 }
             }
 
-            dir = new File(Minecraft.getMinecraft().mcDataDir, "config" + File.separator + "todomod");
+            dir = new File(Minecraft.getMinecraft().mcDataDir, "config" + File.separator + "todolist");
             dir.mkdirs();
             server = new File(dir, serverName);
 
