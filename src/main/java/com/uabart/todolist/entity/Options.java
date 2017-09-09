@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class Options {
 
     private static final boolean DEFAULT_VALUE_COMPLETED_TASKS = true;
+    private static final boolean DEFAULT_VALUE_VISIBLE = true;
     private static final boolean DEFAULT_VALUE_SHOW_CATEGORIES = false;
     private static final int DEFAULT_VALUE_MAX_TASKS_ON_SCREEN = 7;
     private static final int DEFAULT_VALUE_MAX_CATEGORIES = 8;
@@ -19,6 +20,11 @@ public class Options {
     private Property UI_max_tasks_on_screen;
     private Property UI_max_categories_on_screen;
     private Property UI_show_categories;
+    private Property UI_visible;
+
+    public static final String KEY_IDENTIFIER = "world.todolist";
+    public static final int DEFAULT_KEY = 21; // 'Y'
+
 
     public static Options getInstance() {
         return instance;
@@ -34,6 +40,7 @@ public class Options {
         instance.UI_max_tasks_on_screen = instance.config.get("UI", "maximumTasksOnScreen", DEFAULT_VALUE_MAX_TASKS_ON_SCREEN, "How many tasks should be displayed on the category screen");
         instance.UI_max_categories_on_screen = instance.config.get("UI", "maximumCategoriesOnScreen", DEFAULT_VALUE_MAX_CATEGORIES, "How many categories should be displayed on the main screen");
         instance.UI_show_categories = instance.config.get("UI", "showCategories", DEFAULT_VALUE_SHOW_CATEGORIES, "Should I show categories on just use Any category all the time");
+        instance.UI_visible = instance.config.get("UI", "visible", DEFAULT_VALUE_VISIBLE, "Should I show ToDoList");
 
         instance.config.save();
 
@@ -54,6 +61,15 @@ public class Options {
 
     public int getMaxCategoriesOnScreen() {
         return UI_max_categories_on_screen.getInt(DEFAULT_VALUE_MAX_CATEGORIES);
+    }
+
+    public boolean getVisible() {
+        return UI_visible.getBoolean(DEFAULT_VALUE_VISIBLE);
+    }
+
+    public void setVisible(boolean isVisible) {
+        UI_visible.set(isVisible);
+        instance.config.save();
     }
 
 }

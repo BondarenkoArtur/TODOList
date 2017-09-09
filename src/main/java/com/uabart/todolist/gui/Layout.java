@@ -31,7 +31,6 @@ public class Layout {
 
     private MyButton previousPage, nextPage, addTask, addCategory, back;
     private MyButton showHideButton;
-    private boolean isMenuHidden = false;
     private List<Widget> toDraw;
     private List<Widget> toDrawOverlay;
     private List<FieldIcon> fieldIcons;
@@ -72,8 +71,7 @@ public class Layout {
         showHideButton = new MyButton("ToDo") {
             @Override
             public boolean onButtonPress(boolean b) {
-                isMenuHidden = !isMenuHidden;
-                sendMessage(GuiMessage.REFRESH);
+                toggleMenuHidden();
                 return true;
             }
         };
@@ -158,6 +156,11 @@ public class Layout {
         nextPage.w = nextPage.contentWidth() + 6;
         nextPage.x = back.x + back.w + offsetx;
         nextPage.y = addTask.y;
+    }
+
+    public void toggleMenuHidden() {
+        Options.getInstance().setVisible(!Options.getInstance().getVisible());
+        sendMessage(GuiMessage.REFRESH);
     }
 
     public void showCategory(final Category category, int currentPage) {
@@ -287,7 +290,7 @@ public class Layout {
             toDraw.add(back);
         }
 
-        if (isMenuHidden) {
+        if (!Options.getInstance().getVisible()) {
             toDraw.clear();
             toDrawOverlay.clear();
         }
@@ -495,7 +498,7 @@ public class Layout {
 
         toDraw.add(back);
 
-        if (isMenuHidden) {
+        if (!Options.getInstance().getVisible()) {
             toDraw.clear();
             toDrawOverlay.clear();
         }
@@ -580,7 +583,7 @@ public class Layout {
         toDraw.add(nextPage);
         toDraw.add(addCategory);
 
-        if (isMenuHidden) {
+        if (!Options.getInstance().getVisible()) {
             toDraw.clear();
             toDrawOverlay.clear();
         }
