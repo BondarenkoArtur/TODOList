@@ -34,6 +34,7 @@ public class Layout {
     private boolean isMenuHidden = false;
     private List<Widget> toDraw;
     private List<Widget> toDrawOverlay;
+    private List<FieldIcon> fieldIcons;
     private HashMap<Task, List<Widget>> widgetMap;
     private TaskHolder holder;
     private GuiListener listener;
@@ -43,6 +44,7 @@ public class Layout {
     public Layout() {
         toDraw = new ArrayList<Widget>();
         toDrawOverlay = new ArrayList<Widget>();
+        fieldIcons = new ArrayList<FieldIcon>();
         widgetMap = new HashMap<Task, List<Widget>>();
     }
 
@@ -296,6 +298,7 @@ public class Layout {
 
         toDraw.clear();
         toDrawOverlay.clear();
+        fieldIcons.clear();
 
         FieldIcon icon = new FieldIcon(task) {
             @Override
@@ -358,6 +361,7 @@ public class Layout {
         toDraw.add(delete);
         toDraw.add(mainName);
         toDraw.add(icon);
+        fieldIcons.add(icon);
 
         FieldMainName transpMainName = mainName.clone();
         transpMainName.setBackgroundVisible(false);
@@ -441,6 +445,7 @@ public class Layout {
                 toDraw.add(subDelete);
                 toDraw.add(subicon);
                 toDraw.add(subName);
+                fieldIcons.add(subicon);
 
                 FieldMainName transpSubName = subName.clone();
                 transpSubName.setBackgroundVisible(false);
@@ -518,6 +523,7 @@ public class Layout {
                     Slot slot = GuiContainerManager.getSlotMouseOver(guiContainer);
                     if (slot != null) {
                         ItemStack stack = slot.getStack();
+                        stack.stackSize = 1;
                         task.setReference(stack);
 
                         if (task.getName().isEmpty() || task.getName().equals("Empty"))
@@ -588,5 +594,9 @@ public class Layout {
 
     public List<Widget> getToDrawOverlay() {
         return toDrawOverlay;
+    }
+
+    public List<FieldIcon> getFieldIcons() {
+        return fieldIcons;
     }
 }

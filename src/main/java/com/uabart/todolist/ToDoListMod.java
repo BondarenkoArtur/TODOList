@@ -5,6 +5,7 @@ import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
 import com.uabart.todolist.handler.DrawHandler;
+import com.uabart.todolist.handler.NEIToDoGuiHandler;
 import com.uabart.todolist.handler.OverlayDrawHandler;
 import com.uabart.todolist.manager.Manager;
 
@@ -22,6 +23,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -104,6 +106,8 @@ public class ToDoListMod {
                     e.printStackTrace();
                 }
             }
+
+            API.registerNEIGuiHandler(new NEIToDoGuiHandler());
         }
     }
 

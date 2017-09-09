@@ -119,6 +119,10 @@ public class FieldIcon extends Widget implements TaskListener {
         return tooltip;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
     @Override
     public void update(Task task) {
         this.stack = task.getReference();
