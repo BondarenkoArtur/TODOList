@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.List;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.Widget;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiCraftingRecipe;
@@ -69,27 +70,39 @@ public class FieldIcon extends Widget implements TaskListener {
 
     @Override
     public boolean handleClick(int mousex, int mousey, int button) {
-        switch (button) {
-            case 0:
-                if (stack != null && stack.getItem() != null) {
-                    GuiCraftingRecipe.openRecipeGui("item", stack);
-                }
-                changing = false;
-                return true;
+        ItemStack item = NEIClientUtils.getHeldItem();
+        if (item != null) {
+            ItemStack newStack = new ItemStack(item.getItem());
+            newStack.stackSize = 1;
+            newStack.setItemDamage(item.getItemDamage());
+            task.setReference(newStack);
+            if (task.getName().isEmpty() || task.getName().equals("Empty"))
+                task.setName(newStack.getDisplayName());
+            update(task);
+            return super.handleClick(mousex, mousey, button);
+        } else {
+            switch (button) {
+                case 0:
+                    if (stack != null && stack.getItem() != null) {
+                        GuiCraftingRecipe.openRecipeGui("item", stack);
+                    }
+                    changing = false;
+                    return true;
 
-            case 1:
-                if (stack != null && stack.getItem() != null) {
-                    GuiUsageRecipe.openRecipeGui("item", stack);
-                }
-                changing = false;
-                return true;
+                case 1:
+                    if (stack != null && stack.getItem() != null) {
+                        GuiUsageRecipe.openRecipeGui("item", stack);
+                    }
+                    changing = false;
+                    return true;
 
-            case 2:
-                changing = !changing;
-                return true;
+                case 2:
+                    changing = !changing;
+                    return true;
 
-            default:
-                return super.handleClick(mousex, mousey, button);
+                default:
+                    return super.handleClick(mousex, mousey, button);
+            }
         }
     }
 
