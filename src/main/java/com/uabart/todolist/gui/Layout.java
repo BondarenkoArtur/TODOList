@@ -77,7 +77,7 @@ public class Layout {
         };
         showHideButton.x = 0;
         showHideButton.y = 0;
-        showHideButton.w = showHideButton.contentWidth();
+        showHideButton.w = showHideButton.contentWidth() + 6;
         showHideButton.h = 20;
 
         previousPage = new MyButton("<") {
@@ -297,12 +297,6 @@ public class Layout {
         toDraw.clear();
         toDrawOverlay.clear();
 
-        FieldMainName mainName = new FieldMainName(task);
-        mainName.x = addTask.x;
-        mainName.y = 40;
-        mainName.w = 100;
-        mainName.h = addTask.h;
-
         FieldIcon icon = new FieldIcon(task) {
             @Override
             public boolean handleClickExt(int mx, int my, int button) {
@@ -319,10 +313,17 @@ public class Layout {
                 }
             }
         };
-        icon.x = mainName.x + mainName.w + 4;
-        icon.y = mainName.y + 2;
+
+        icon.x = addTask.x + 3;
+        icon.y = 42;
         icon.w = 18;
         icon.h = 18;
+
+        FieldMainName mainName = new FieldMainName(task);
+        mainName.x = icon.x + icon.w;
+        mainName.y = icon.y - 2;
+        mainName.w = 100;
+        mainName.h = addTask.h;
 
         FieldCompletedCheckbox checkbox = new FieldCompletedCheckbox(task) {
             @Override
@@ -353,10 +354,11 @@ public class Layout {
         delete.h = checkbox.h;
         delete.w = delete.contentWidth() + 6;
 
-        toDraw.add(mainName);
         toDraw.add(checkbox);
-        toDraw.add(icon);
         toDraw.add(delete);
+        toDraw.add(mainName);
+        toDraw.add(icon);
+
         FieldMainName transpMainName = mainName.clone();
         transpMainName.setBackgroundVisible(false);
         FieldIcon transpMainIcon = icon.clone();
@@ -377,7 +379,7 @@ public class Layout {
                     }
                 };
                 subName.x = mainName.x;
-                subName.y = mainName.y + (n + 2) * mainName.h + n;
+                subName.y = (mainName.y + 10) + (n + 1) * mainName.h + n;
                 subName.w = mainName.w;
                 subName.h = mainName.h - 2;
                 if (getFocus)
@@ -393,7 +395,7 @@ public class Layout {
                 subCheckbox.w = checkbox.w;
                 subCheckbox.h = checkbox.h - 1;
                 subCheckbox.y = subName.y - 1;
-                subCheckbox.x = subName.x - 1 - subCheckbox.w;
+                subCheckbox.x = previousPage.x;
 
                 Button subDelete = new MyButton("x") {
 
@@ -435,10 +437,10 @@ public class Layout {
                 subicon.w = icon.w - 2;
                 subicon.offset = 1;
 
-                toDraw.add(subDelete);
                 toDraw.add(subCheckbox);
-                toDraw.add(subName);
+                toDraw.add(subDelete);
                 toDraw.add(subicon);
+                toDraw.add(subName);
 
                 FieldMainName transpSubName = subName.clone();
                 transpSubName.setBackgroundVisible(false);
@@ -478,7 +480,7 @@ public class Layout {
 
             };
             newSub.x = mainName.x;
-            newSub.y = mainName.y + (n + 2) * mainName.h + n;
+            newSub.y = (mainName.y + 10) + (n + 1) * mainName.h + n;
             newSub.w = mainName.w;
             newSub.h = mainName.h;
             toDraw.add(newSub);
