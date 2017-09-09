@@ -18,6 +18,7 @@ public class OverlayGui extends Gui {
 
     public void renderGameOverlay(float partialTicks, int mouseX, int mouseY) {
         if (mc.thePlayer != null &&
+                mc.currentScreen == null &&
                 mc.theWorld != null) {
             RenderHelper.enableGUIStandardItemLighting();
             for (Widget widget : Manager.getLayout().getToDrawOverlay()) {
