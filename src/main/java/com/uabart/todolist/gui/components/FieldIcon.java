@@ -21,6 +21,7 @@ public class FieldIcon extends Widget implements TaskListener {
     public int x, y, offset;
     private ItemStack stack;
     private Task task;
+    private boolean isBackgroundVisible = true;
 
     public FieldIcon(Task task) {
         super();
@@ -30,17 +31,32 @@ public class FieldIcon extends Widget implements TaskListener {
     }
 
     @Override
+    public FieldIcon clone() {
+        FieldIcon cloneObject = new FieldIcon(this.task);
+        cloneObject.x = this.x;
+        cloneObject.y = this.y;
+        cloneObject.w = this.w;
+        cloneObject.h = this.h;
+        return cloneObject;
+    }
+
+    @Override
     public void draw(int mousex, int mousey) {
+        if (isBackgroundVisible) {
+            drawBox();
+        }
+        if (stack != null && stack.getItem() != null) {
+            GuiContainerManager.drawItem(x - offset, y - offset, stack);
+        }
+    }
+
+    private void drawBox() {
         GuiDraw.drawRect(x - 2, y - 2, w + 2, h + 2, 0xffA0A0A0);
 
         if (changing)
             GuiDraw.drawRect(x - 1, y - 1, w, h, 0xee555555);
         else
             GuiDraw.drawRect(x - 1, y - 1, w, h, 0xee000000);
-
-        if (stack != null && stack.getItem() != null) {
-            GuiContainerManager.drawItem(x - offset, y - offset, stack);
-        }
     }
 
     @Override
@@ -106,5 +122,9 @@ public class FieldIcon extends Widget implements TaskListener {
     @Override
     public void update(Task task) {
         this.stack = task.getReference();
+    }
+
+    public void setBackgroundVisible(boolean backgroundVisible) {
+        isBackgroundVisible = backgroundVisible;
     }
 }

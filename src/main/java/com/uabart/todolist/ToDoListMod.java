@@ -5,6 +5,7 @@ import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
 import com.uabart.todolist.handler.DrawHandler;
+import com.uabart.todolist.handler.OverlayDrawHandler;
 import com.uabart.todolist.manager.Manager;
 
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,7 @@ public class ToDoListMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new OverlayDrawHandler());
     }
 
     @Mod.EventHandler

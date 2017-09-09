@@ -20,12 +20,23 @@ public class FieldMainName extends TextField implements TaskListener {
     private int move = 0;
     private boolean editable = true;
     private boolean updating = false;
+    private boolean isBackgroundVisible = true;
 
     public FieldMainName(Task task) {
         super(task.toString());
         this.task = task;
         this.task.setListener(this);
         setText(task.getName());
+    }
+
+    @Override
+    public FieldMainName clone() {
+        FieldMainName cloneObject = new FieldMainName(this.task);
+        cloneObject.x = this.x;
+        cloneObject.y = this.y;
+        cloneObject.w = this.w;
+        cloneObject.h = this.h;
+        return cloneObject;
     }
 
     @Override
@@ -49,7 +60,9 @@ public class FieldMainName extends TextField implements TaskListener {
 
     @Override
     public void draw(int mousex, int mousey) {
-        drawBox();
+        if (isBackgroundVisible) {
+            drawBox();
+        }
 
         String drawtext = text();
 
@@ -153,6 +166,11 @@ public class FieldMainName extends TextField implements TaskListener {
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+
+    public void setBackgroundVisible(boolean backgroundVisible) {
+        isBackgroundVisible = backgroundVisible;
+    }
+
 
     public Task getTask() {
         return task;

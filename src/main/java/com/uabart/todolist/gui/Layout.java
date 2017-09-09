@@ -21,7 +21,6 @@ import java.util.List;
 
 import codechicken.nei.Button;
 import codechicken.nei.ItemPanel;
-import codechicken.nei.Label;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.TextField;
@@ -34,15 +33,16 @@ public class Layout {
     private MyButton showHideButton;
     private boolean isMenuHidden = false;
     private List<Widget> toDraw;
+    private List<Widget> toDrawOverlay;
     private HashMap<Task, List<Widget>> widgetMap;
     private TaskHolder holder;
     private GuiListener listener;
     private boolean getFocus = false;
-    private Label cztLalka;
     private boolean isShowCategories;
 
     public Layout() {
         toDraw = new ArrayList<Widget>();
+        toDrawOverlay = new ArrayList<Widget>();
         widgetMap = new HashMap<Task, List<Widget>>();
     }
 
@@ -67,9 +67,7 @@ public class Layout {
 //		boolean edgeAlign = NEIClientConfig.getBooleanSetting("options.edge-align buttons");
         int offsetx = edgeAlign ? 0 : 3;
 
-        cztLalka = new Label("czt lalka", false);
-
-        showHideButton = new MyButton("ToDo"){
+        showHideButton = new MyButton("ToDo") {
             @Override
             public boolean onButtonPress(boolean b) {
                 isMenuHidden = !isMenuHidden;
@@ -163,6 +161,7 @@ public class Layout {
     public void showCategory(final Category category, int currentPage) {
         // Clear current screen
         toDraw.clear();
+        toDrawOverlay.clear();
 
         // alignment check
         boolean edgeAlign = true;
@@ -286,8 +285,9 @@ public class Layout {
             toDraw.add(back);
         }
 
-        if (isMenuHidden){
+        if (isMenuHidden) {
             toDraw.clear();
+            toDrawOverlay.clear();
         }
         toDraw.add(showHideButton);
     }
@@ -295,6 +295,7 @@ public class Layout {
     public void showTask(final Task task) {
 
         toDraw.clear();
+        toDrawOverlay.clear();
 
         FieldMainName mainName = new FieldMainName(task);
         mainName.x = addTask.x;
@@ -356,10 +357,12 @@ public class Layout {
         toDraw.add(checkbox);
         toDraw.add(icon);
         toDraw.add(delete);
-        if (Math.random() < 0.01) {
-            toDraw.add(cztLalka);
-        }
-
+        FieldMainName transpMainName = mainName.clone();
+        transpMainName.setBackgroundVisible(false);
+        FieldIcon transpMainIcon = icon.clone();
+        transpMainIcon.setBackgroundVisible(false);
+        toDrawOverlay.add(transpMainName);
+        toDrawOverlay.add(transpMainIcon);
         int n = 0;
         for (final Task sub : task.listSubtasks()) {
             if (!sub.isCompleted() || Options.getInstance().showCompletedTasks()) {
@@ -436,6 +439,13 @@ public class Layout {
                 toDraw.add(subCheckbox);
                 toDraw.add(subName);
                 toDraw.add(subicon);
+
+                FieldMainName transpSubName = subName.clone();
+                transpSubName.setBackgroundVisible(false);
+                FieldIcon transpSubIcon = subicon.clone();
+                transpSubIcon.setBackgroundVisible(false);
+                toDrawOverlay.add(transpSubName);
+                toDrawOverlay.add(transpSubIcon);
                 n++;
             }
         }
@@ -478,8 +488,9 @@ public class Layout {
 
         toDraw.add(back);
 
-        if (isMenuHidden){
+        if (isMenuHidden) {
             toDraw.clear();
+            toDrawOverlay.clear();
         }
         toDraw.add(showHideButton);
 
@@ -520,6 +531,7 @@ public class Layout {
 
         // Clear current screen
         toDraw.clear();
+        toDrawOverlay.clear();
 
         // alignment check
         boolean edgeAlign = true;
@@ -560,8 +572,9 @@ public class Layout {
         toDraw.add(nextPage);
         toDraw.add(addCategory);
 
-        if (isMenuHidden){
+        if (isMenuHidden) {
             toDraw.clear();
+            toDrawOverlay.clear();
         }
         toDraw.add(showHideButton);
 
@@ -569,5 +582,9 @@ public class Layout {
 
     public List<Widget> getToDraw() {
         return toDraw;
+    }
+
+    public List<Widget> getToDrawOverlay() {
+        return toDrawOverlay;
     }
 }
