@@ -25,6 +25,6 @@ public class NEIToDoGuiHandler extends INEIGuiAdapter {
                 }
             }
         }
-        return true;
+        return super.handleDragNDrop(gui, mousex, mousey, draggedStack, button);
     }
 }
