@@ -8,7 +8,7 @@ import com.uabart.todolist.gui.components.FieldButtonName;
 import com.uabart.todolist.gui.components.FieldCompletedCheckbox;
 import com.uabart.todolist.gui.components.FieldIcon;
 import com.uabart.todolist.gui.components.FieldMainName;
-import com.uabart.todolist.gui.components.MyButton;
+import com.uabart.todolist.gui.components.GuiButton;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -29,8 +29,8 @@ import codechicken.nei.guihook.GuiContainerManager;
 
 public class Layout {
 
-    private MyButton previousPage, nextPage, addTask, addCategory, back;
-    private MyButton showHideButton;
+    private GuiButton previousPage, nextPage, addTask, addCategory, back;
+    private GuiButton showHideButton;
     private List<Widget> toDraw;
     private List<Widget> toDrawOverlay;
     private List<FieldIcon> fieldIcons;
@@ -68,19 +68,15 @@ public class Layout {
 //		boolean edgeAlign = NEIClientConfig.getBooleanSetting("options.edge-align buttons");
         int offsetx = edgeAlign ? 0 : 3;
 
-        showHideButton = new MyButton("ToDo") {
+        showHideButton = new GuiButton("ToDo", 0, 0, 20, 6) {
             @Override
             public boolean onButtonPress(boolean b) {
                 toggleMenuHidden();
                 return true;
             }
         };
-        showHideButton.x = 0;
-        showHideButton.y = 0;
-        showHideButton.w = showHideButton.contentWidth() + 6;
-        showHideButton.h = 20;
 
-        previousPage = new MyButton("<") {
+        previousPage = new GuiButton("<", 0, 20, 20, 6) {
 
             @Override
             public boolean onButtonPress(boolean rightclick) {
@@ -93,12 +89,10 @@ public class Layout {
                 return "Previous page";
             }
         };
-        previousPage.h = 20;
-        previousPage.w = previousPage.contentWidth() + 6;
-        previousPage.x = 0;
-        previousPage.y = 20;
-        // -------------------------------
-        addTask = new MyButton("Add task") {
+
+        Integer draw_offset = previousPage.x + previousPage.w + offsetx;
+
+        addTask = new GuiButton("Add task", draw_offset, previousPage.y, 20, 0) {
 
             @Override
             public boolean onButtonPress(boolean rightclick) {
@@ -106,11 +100,8 @@ public class Layout {
                 return true;
             }
         };
-        addTask.h = 20;
-        addTask.x = previousPage.x + previousPage.w + offsetx;
-        addTask.y = previousPage.y;
-        // -------------------------------
-        addCategory = new MyButton("Add category") {
+
+        addCategory = new GuiButton("Add category", draw_offset, previousPage.y, 20, 0) {
 
             @Override
             public boolean onButtonPress(boolean rightclick) {
@@ -118,15 +109,12 @@ public class Layout {
                 return true;
             }
         };
-        addCategory.h = 20;
-        addCategory.x = previousPage.x + previousPage.w + offsetx;
-        addCategory.y = previousPage.y;
-        // -------------------------------
+
         int wt = Math.max(addTask.contentWidth(), addCategory.contentWidth()) + 6;
         addTask.w = wt;
         addCategory.w = wt;
-        // --------------------
-        back = new MyButton("Back") {
+
+        back = new GuiButton("Back", addTask.x + offsetx + wt, addTask.y, addTask.h,  6) {
 
             @Override
             public boolean onButtonPress(boolean rightclick) {
@@ -134,12 +122,8 @@ public class Layout {
                 return false;
             }
         };
-        back.h = addTask.h;
-        back.w = back.contentWidth() + 6;
-        back.x = addTask.x + offsetx + wt;
-        back.y = addTask.y;
-        // -------------------------------
-        nextPage = new MyButton(">") {
+
+        nextPage = new GuiButton(">", back.x + back.w + offsetx, addTask.y, 20, 6) {
 
             @Override
             public boolean onButtonPress(boolean rightclick) {
@@ -152,10 +136,6 @@ public class Layout {
                 return "Next page";
             }
         };
-        nextPage.h = 20;
-        nextPage.w = nextPage.contentWidth() + 6;
-        nextPage.x = back.x + back.w + offsetx;
-        nextPage.y = addTask.y;
     }
 
     public void toggleMenuHidden() {
@@ -179,7 +159,7 @@ public class Layout {
         categoryName.w = 100;
         categoryName.h = back.h;
 
-        Button categoryDelete = new MyButton("x") {
+        Button categoryDelete = new GuiButton("x") {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 sendMessage(GuiMessage.DELETE, category);
@@ -343,7 +323,7 @@ public class Layout {
         checkbox.y = mainName.y - 1;
         checkbox.x = previousPage.x;
 
-        Button delete = new MyButton("x") {
+        Button delete = new GuiButton("x") {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 sendMessage(GuiMessage.DELETE, task);
@@ -404,7 +384,7 @@ public class Layout {
                 subCheckbox.y = subName.y - 1;
                 subCheckbox.x = previousPage.x;
 
-                Button subDelete = new MyButton("x") {
+                Button subDelete = new GuiButton("x") {
 
                     @Override
                     public boolean onButtonPress(boolean rightclick) {
