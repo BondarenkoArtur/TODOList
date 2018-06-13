@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class FieldButtonName extends MyButton implements TaskListener {
+public abstract class FieldButtonName extends GuiButton implements TaskListener {
 
     private Task task;
     private String realLabel;

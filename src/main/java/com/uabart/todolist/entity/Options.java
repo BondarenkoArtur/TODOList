@@ -14,8 +14,10 @@ public class Options {
     private static final boolean DEFAULT_VALUE_SHOW_CATEGORIES = false;
     private static final int DEFAULT_VALUE_MAX_TASKS_ON_SCREEN = 7;
     private static final int DEFAULT_VALUE_MAX_CATEGORIES = 8;
+
     private static Options instance;
     private Configuration config;
+
     private Property UI_show_completed_tasks;
     private Property UI_max_tasks_on_screen;
     private Property UI_max_categories_on_screen;
@@ -32,10 +34,9 @@ public class Options {
 
     public static Options load(FMLPreInitializationEvent event) {
         instance = new Options();
-        instance.config = new Configuration(new File(event.getModConfigurationDirectory(), "ToDoList.cfg"));
+        instance.config = new Configuration(event.getSuggestedConfigurationFile());
         instance.config.load();
 
-        instance.config.addCustomCategoryComment("UI", "UI definitions");
         instance.UI_show_completed_tasks = instance.config.get("UI", "showCompletedTasks", DEFAULT_VALUE_COMPLETED_TASKS, "If tasks that are already completed should be shown or not");
         instance.UI_max_tasks_on_screen = instance.config.get("UI", "maximumTasksOnScreen", DEFAULT_VALUE_MAX_TASKS_ON_SCREEN, "How many tasks should be displayed on the category screen");
         instance.UI_max_categories_on_screen = instance.config.get("UI", "maximumCategoriesOnScreen", DEFAULT_VALUE_MAX_CATEGORIES, "How many categories should be displayed on the main screen");

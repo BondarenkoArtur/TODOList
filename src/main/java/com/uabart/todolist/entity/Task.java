@@ -74,10 +74,19 @@ public class Task {
         return reference;
     }
 
+    public void createReference(ItemStack reference) {
+        setReference(reference);
+    }
+
+    public void loadReference(ItemStack reference) {
+        setReference(reference);
+    }
+
     public void setReference(ItemStack reference) {
         this.reference = reference;
         this.itemID = Item.getIdFromItem(reference.getItem());
         this.itemDamage = reference.getItemDamage();
+
         updateListener();
     }
 
@@ -129,9 +138,7 @@ public class Task {
     public boolean equals(Object obj) {
         if (obj == null)
             return false;
-        if (obj == this)
-            return true;
-        return false;
+        return obj == this;
     }
 
 }

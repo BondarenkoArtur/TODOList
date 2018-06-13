@@ -22,6 +22,11 @@ public class FieldMainName extends TextField implements TaskListener {
     private boolean updating = false;
     private boolean isBackgroundVisible = true;
 
+    private static int COMPLETED_FOCUSED = 0xFF00EE00;
+    private static int COMPLETED_UNFOCUSED = 0xFF009900;
+    private static int NOT_COMPLETED_FOCUSED = 0xFFE0E0E0;
+    private static int NOT_COMPLETED_UNFOCUSED = 0xFF909090;
+
     public FieldMainName(Task task) {
         super(task.toString());
         this.task = task;
@@ -136,9 +141,9 @@ public class FieldMainName extends TextField implements TaskListener {
     @Override
     public int getTextColour() {
         if (task.isCompleted())
-            return focused() ? 0xFFAA0000 : 0xFFFF0000;
+            return focused() ? COMPLETED_FOCUSED : COMPLETED_UNFOCUSED;
         else
-            return focused() ? 0xFFE0E0E0 : 0xFF909090;
+            return focused() ? NOT_COMPLETED_FOCUSED : NOT_COMPLETED_UNFOCUSED;
     }
 
     @Override
