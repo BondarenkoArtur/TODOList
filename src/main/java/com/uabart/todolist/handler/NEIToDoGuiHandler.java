@@ -17,7 +17,7 @@ public class NEIToDoGuiHandler extends INEIGuiAdapter {
                 if (mousey >= icon.y && mousey <= icon.y + icon.h){
                     Task task = icon.getTask();
                     draggedStack.stackSize = 1;
-                    task.setReference(draggedStack);
+                    task.createReference(draggedStack);
                     if (task.getName().isEmpty() || task.getName().equals("Empty"))
                         task.setName(draggedStack.getDisplayName());
                     icon.update(task);

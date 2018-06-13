@@ -24,8 +24,8 @@ repositories {
 
 apply plugin: 'forge'
 
-version = "1.0.7"
-group= "com.uabart.todolist"
+version = "1.0.8"
+group = "com.uabart.todolist"
 archivesBaseName = "todolist"
 
 minecraft {

@@ -74,10 +74,19 @@ public class Task {
         return reference;
     }
 
+    public void createReference(ItemStack reference) {
+        setReference(reference);
+    }
+
+    public void loadReference(ItemStack reference) {
+        setReference(reference);
+    }
+
     public void setReference(ItemStack reference) {
         this.reference = reference;
         this.itemID = Item.getIdFromItem(reference.getItem());
         this.itemDamage = reference.getItemDamage();
+
         updateListener();
     }
 

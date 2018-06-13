@@ -38,7 +38,7 @@ public class TaskHolder {
         if (task.getItemID() > 0) {
             ItemStack stack = new ItemStack(Item.getItemById(task.getItemID()));
             stack.setItemDamage(task.getItemDamage());
-            task.setReference(stack);
+            task.loadReference(stack);
         }
         for (Task sub : task.listSubtasks())
             loadTask(sub);

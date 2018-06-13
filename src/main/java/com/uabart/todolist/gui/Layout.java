@@ -492,7 +492,7 @@ public class Layout {
                 ItemPanel.ItemPanelSlot item = LayoutManager.itemPanel.getSlotMouseOver(mouseX, mouseY);
                 if (item != null) {
                     ItemStack stack = item.item;
-                    task.setReference(stack);
+                    task.createReference(stack);
 
                     if (task.getName().isEmpty() || task.getName().equals("Empty"))
                         task.setName(stack.getDisplayName());
