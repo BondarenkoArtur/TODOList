@@ -9,12 +9,19 @@ import com.uabart.todolist.handler.NEIToDoGuiHandler;
 import com.uabart.todolist.handler.OverlayDrawHandler;
 import com.uabart.todolist.manager.Manager;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -70,9 +77,15 @@ public class ToDoListMod {
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event)
     {
         logger.info("Server is starting, loading base settings");
-        String serverName = MinecraftServer.getServer().getWorldName()+".json";
 
-        logger.info(String.format("Server name is %s", serverName));
+        String serverName;
+        if(event.isLocal) {
+            serverName = Minecraft.getMinecraft().getIntegratedServer().getWorldName() + ".xml";
+        } else {
+            serverName = FMLClientHandler.instance().getClient().func_147104_D().serverName + ".xml";
+        }
+
+        logger.info(String.format("Server filename is %s", serverName));
         currentServerConfig = new File(configDir, serverName);
 
         DrawHandler.init = true;
