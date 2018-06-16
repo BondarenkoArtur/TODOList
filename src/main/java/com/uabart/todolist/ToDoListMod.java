@@ -13,16 +13,11 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -99,6 +94,9 @@ public class ToDoListMod {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            TaskHolder empty = new TaskHolder();
+            Manager.getHolder().setCategories(empty.getCategories());
         }
         API.registerNEIGuiHandler(new NEIToDoGuiHandler());
     }
