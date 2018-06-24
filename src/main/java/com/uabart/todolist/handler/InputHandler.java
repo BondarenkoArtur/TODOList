@@ -7,15 +7,12 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import codechicken.nei.Widget;
 import codechicken.nei.guihook.IContainerInputHandler;
 
+import static com.uabart.todolist.entity.Options.DEFAULT_KEY;
+
 public class InputHandler implements IContainerInputHandler {
 
     @Override
-    public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
-        for (Widget widget : Manager.getLayout().getToDraw()) {
-            if (widget.handleKeyPress(keyCode, keyChar))
-                return true;
-        }
-
+    public boolean keyTyped(GuiContainer gui, char keyChar, int keyID) {
         return false;
     }
 
@@ -26,6 +23,12 @@ public class InputHandler implements IContainerInputHandler {
 
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
+        if (keyID == DEFAULT_KEY) {
+            Manager.getLayout().toggleMenuHidden();
+        }
+        for (Widget widget : Manager.getLayout().getToDraw()) {
+            if (widget.handleKeyPress(keyID, keyChar)) return true;
+        }
         return false;
     }
 

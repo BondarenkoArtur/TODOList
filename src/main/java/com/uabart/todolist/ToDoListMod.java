@@ -9,13 +9,15 @@ import com.uabart.todolist.handler.NEIToDoGuiHandler;
 import com.uabart.todolist.handler.OverlayDrawHandler;
 import com.uabart.todolist.manager.Manager;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.server.MinecraftServer;
+
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -34,7 +36,7 @@ import cpw.mods.fml.common.Mod;
 @Mod(modid = ToDoListMod.MODID, version = ToDoListMod.VERSION)
 public class ToDoListMod {
     public static final String MODID = "todolist";
-    public static final String VERSION = "1.0.9";
+    public static final String VERSION = "1.0.10";
 
     @Mod.Instance("todolist")
     public static ToDoListMod instance;
@@ -70,9 +72,15 @@ public class ToDoListMod {
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event)
     {
         logger.info("Server is starting, loading base settings");
-        String serverName = MinecraftServer.getServer().getWorldName()+".json";
 
-        logger.info(String.format("Server name is %s", serverName));
+        String serverName;
+        if(event.isLocal) {
+            serverName = Minecraft.getMinecraft().getIntegratedServer().getWorldName() + ".xml";
+        } else {
+            serverName = FMLClientHandler.instance().getClient().func_147104_D().serverName + ".xml";
+        }
+
+        logger.info(String.format("Server filename is %s", serverName));
         currentServerConfig = new File(configDir, serverName);
 
         DrawHandler.init = true;
@@ -86,6 +94,9 @@ public class ToDoListMod {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            TaskHolder empty = new TaskHolder();
+            Manager.getHolder().setCategories(empty.getCategories());
         }
         API.registerNEIGuiHandler(new NEIToDoGuiHandler());
     }
