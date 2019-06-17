@@ -5,12 +5,13 @@ import com.uabart.todolist.manager.Manager;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.Widget;
 import codechicken.nei.guihook.IContainerDrawHandler;
 
-
 public class DrawHandler implements IContainerDrawHandler {
 
+    private static final int RECIPE_MODE = 0;
     public static boolean init = true;
 
     @Override
@@ -23,8 +24,10 @@ public class DrawHandler implements IContainerDrawHandler {
 
     @Override
     public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-        for (Widget widget : Manager.getLayout().getToDraw()) {
-            widget.draw(mousex, mousey);
+        if (NEIClientConfig.getCheatMode() == RECIPE_MODE) {
+            for (Widget widget : Manager.getLayout().getToDraw()) {
+                widget.draw(mousex, mousey);
+            }
         }
     }
 
@@ -39,5 +42,4 @@ public class DrawHandler implements IContainerDrawHandler {
     @Override
     public void renderSlotOverlay(GuiContainer gui, Slot slot) {
     }
-
 }
