@@ -22,6 +22,7 @@ public class Task {
     @XmlElement
     protected List<Task> subtasks;
     private String name;
+    private int moveSymbols;
     private int priority;
     private boolean completed;
     private int itemID, itemDamage;
@@ -36,6 +37,7 @@ public class Task {
     public Task() {
         this.name = "";
         this.priority = 0;
+        this.moveSymbols = 0;
         this.completed = false;
         this.reference = null;
         this.subtasks = new ArrayList<Task>();
@@ -141,4 +143,11 @@ public class Task {
         return obj == this;
     }
 
+    public void setMove(int move) {
+        this.moveSymbols = move;
+    }
+
+    public int getMove() {
+        return moveSymbols;
+    }
 }

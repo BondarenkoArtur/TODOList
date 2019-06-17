@@ -17,7 +17,6 @@ import static codechicken.lib.gui.GuiDraw.getStringWidth;
 public class FieldMainName extends TextField implements TaskListener {
 
     private Task task;
-    private int move = 0;
     private boolean editable = true;
     private boolean updating = false;
     private boolean isBackgroundVisible = true;
@@ -50,17 +49,11 @@ public class FieldMainName extends TextField implements TaskListener {
      * Don't use this to check for modifications
      */
     public void onTextChange(String oldText) {
-        move = 0;
         if (updating) {
             // avoid looping in event firing
             return;
         }
         task.setName(this.text());
-        onTextChanged(oldText);
-    }
-
-    public void onTextChanged(String oldText) {
-
     }
 
     @Override
@@ -75,6 +68,7 @@ public class FieldMainName extends TextField implements TaskListener {
             int startOffset = drawtext.length() - getMaxTextLength();
             if (startOffset < 0 || startOffset > drawtext.length())
                 startOffset = 0;
+            int move = task.getMove();
             drawtext = drawtext.substring(startOffset + move, getMaxTextLength() + move + startOffset);
             if (move != 0)
                 drawtext += "..";
@@ -110,6 +104,7 @@ public class FieldMainName extends TextField implements TaskListener {
         if (!focused() || !editable)
             return false;
         boolean s = true;
+        int move = task.getMove();
         if (Keyboard.KEY_LEFT == keyID)
             move -= 1;
         else if (Keyboard.KEY_RIGHT == keyID)
@@ -123,6 +118,7 @@ public class FieldMainName extends TextField implements TaskListener {
             move = 0;
         else
             move = Math.max(move, -text().length() + getMaxTextLength());
+        task.setMove(move);
         return s;
     }
 
@@ -130,11 +126,13 @@ public class FieldMainName extends TextField implements TaskListener {
     public boolean onMouseWheel(int i, int mousex, int mousey) {
         if (!contains(mousex, mousey))
             return false;
+        int move = task.getMove();
         move += i;
         if (move > 0)
             move = 0;
         else
             move = Math.max(move, -text().length() + getMaxTextLength());
+        task.setMove(move);
         return true;
     }
 
