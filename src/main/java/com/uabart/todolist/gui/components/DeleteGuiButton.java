@@ -8,14 +8,14 @@ public class DeleteGuiButton extends GuiButton {
 
     private final GuiListener listener;
     private final Task task;
-    private final boolean isSubTask;
+    private final Type type;
     private boolean isDeleting;
 
-    public DeleteGuiButton(final GuiListener listener, final Task task, final boolean isSubTask) {
+    public DeleteGuiButton(final GuiListener listener, final Task task, final Type type) {
         super("x");
         this.listener = listener;
         this.task = task;
-        this.isSubTask = isSubTask;
+        this.type = type;
     }
 
     @Override
@@ -31,7 +31,31 @@ public class DeleteGuiButton extends GuiButton {
 
     @Override
     public String getButtonTip() {
-        return isDeleting ? "Click again if you want to delete" :
-            isSubTask ? "Delete sub-task" : "Delete task";
+        return isDeleting ? "Click again if you want to delete" : getMessageByType();
+    }
+
+    private String getMessageByType() {
+        final String msg;
+        switch (type) {
+            case TASK:
+                msg = "Delete task";
+                break;
+            case SUBTASK:
+                msg = "Delete sub-task";
+                break;
+            case CATEGORY:
+                msg = "Delete category";
+                break;
+            default:
+                msg = "Delete";
+                break;
+        }
+        return msg;
+    }
+
+    public enum Type {
+        CATEGORY,
+        TASK,
+        SUBTASK
     }
 }

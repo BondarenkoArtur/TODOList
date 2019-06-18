@@ -160,21 +160,10 @@ public class Layout {
         categoryName.w = 100;
         categoryName.h = back.h;
 
-        Button categoryDelete = new GuiButton("x") {
-            @Override
-            public boolean onButtonPress(boolean rightclick) {
-                sendMessage(GuiMessage.DELETE, category);
-                return true;
-            }
-
-            @Override
-            public String getButtonTip() {
-                return "Delete category";
-            }
-        };
+        final Button categoryDelete = new DeleteGuiButton(listener, category, DeleteGuiButton.Type.CATEGORY);
         categoryDelete.x = previousPage.x;
-        categoryDelete.y = categoryName.y;
-        categoryDelete.h = categoryName.h;
+        categoryDelete.y = categoryName.y - 1;
+        categoryDelete.h = 22;
         categoryDelete.w = categoryDelete.contentWidth() + 6;
 
         int count = 0;
@@ -267,9 +256,7 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addTask);
-        if (isShowCategories) {
-            toDraw.add(back);
-        }
+        toDraw.add(back);
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
@@ -324,7 +311,7 @@ public class Layout {
         checkbox.y = mainName.y - 1;
         checkbox.x = previousPage.x;
 
-        final Button delete = new DeleteGuiButton(listener, task, false);
+        final Button delete = new DeleteGuiButton(listener, task, DeleteGuiButton.Type.TASK);
         delete.x = checkbox.x;
         delete.y = checkbox.y + checkbox.h;
         delete.h = checkbox.h;
@@ -374,7 +361,7 @@ public class Layout {
                 subCheckbox.y = subName.y - 1;
                 subCheckbox.x = previousPage.x;
 
-                final Button subDelete = new DeleteGuiButton(listener, sub, true);
+                final Button subDelete = new DeleteGuiButton(listener, sub, DeleteGuiButton.Type.SUBTASK);
                 subDelete.x = subCheckbox.x;
                 subDelete.y = subCheckbox.y + subCheckbox.h;
                 subDelete.h = subCheckbox.h;

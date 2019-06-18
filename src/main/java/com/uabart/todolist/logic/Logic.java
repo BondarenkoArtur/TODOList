@@ -87,6 +87,9 @@ public class Logic implements GuiListener {
                         else
                             layout.showTask(stack.peek());
                     } else {
+                        if (pages.isEmpty()) {
+                            pages.push(0);
+                        }
                         layout.showMain(pages.peek());
                         selected = null;
                     }
