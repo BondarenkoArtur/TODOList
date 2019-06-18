@@ -4,6 +4,7 @@ import com.uabart.todolist.entity.Category;
 import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
+import com.uabart.todolist.gui.components.DeleteGuiButton;
 import com.uabart.todolist.gui.components.FieldButtonName;
 import com.uabart.todolist.gui.components.FieldCompletedCheckbox;
 import com.uabart.todolist.gui.components.FieldIcon;
@@ -323,18 +324,7 @@ public class Layout {
         checkbox.y = mainName.y - 1;
         checkbox.x = previousPage.x;
 
-        Button delete = new GuiButton("x") {
-            @Override
-            public boolean onButtonPress(boolean rightclick) {
-                sendMessage(GuiMessage.DELETE, task);
-                return true;
-            }
-
-            @Override
-            public String getButtonTip() {
-                return "Delete task";
-            }
-        };
+        final Button delete = new DeleteGuiButton(listener, task, false);
         delete.x = checkbox.x;
         delete.y = checkbox.y + checkbox.h;
         delete.h = checkbox.h;
@@ -384,19 +374,7 @@ public class Layout {
                 subCheckbox.y = subName.y - 1;
                 subCheckbox.x = previousPage.x;
 
-                Button subDelete = new GuiButton("x") {
-
-                    @Override
-                    public boolean onButtonPress(boolean rightclick) {
-                        sendMessage(GuiMessage.DELETE, sub);
-                        return true;
-                    }
-
-                    @Override
-                    public String getButtonTip() {
-                        return "Delete sub-task";
-                    }
-                };
+                final Button subDelete = new DeleteGuiButton(listener, sub, true);
                 subDelete.x = subCheckbox.x;
                 subDelete.y = subCheckbox.y + subCheckbox.h;
                 subDelete.h = subCheckbox.h;
