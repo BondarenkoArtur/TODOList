@@ -87,6 +87,9 @@ public class Logic implements GuiListener {
                         else
                             layout.showTask(stack.peek());
                     } else {
+                        if (pages.isEmpty()) {
+                            pages.push(0);
+                        }
                         layout.showMain(pages.peek());
                         selected = null;
                     }
@@ -138,6 +141,20 @@ public class Logic implements GuiListener {
                         layout.showTask(stack.peek());
                     }
 
+                    break;
+
+                case MOVE_UP:
+                    if (!obj.equals(stack.peek())) {
+                        stack.peek().moveTask((Task) obj, true);
+                        layout.showTask(stack.peek());
+                    }
+                    break;
+
+                case MOVE_DOWN:
+                    if (!obj.equals(stack.peek())) {
+                        stack.peek().moveTask((Task) obj, false);
+                        layout.showTask(stack.peek());
+                    }
                     break;
 
                 case NEXT_PAGE:

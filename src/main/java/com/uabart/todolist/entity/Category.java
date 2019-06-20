@@ -89,7 +89,7 @@ public class Category extends Task {
 
         @Override
         public String getName() {
-            return "Any";
+            return "All";
         }
     }
 }

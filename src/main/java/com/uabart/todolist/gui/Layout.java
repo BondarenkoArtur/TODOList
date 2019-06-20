@@ -4,11 +4,13 @@ import com.uabart.todolist.entity.Category;
 import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
+import com.uabart.todolist.gui.components.DeleteGuiButton;
 import com.uabart.todolist.gui.components.FieldButtonName;
 import com.uabart.todolist.gui.components.FieldCompletedCheckbox;
 import com.uabart.todolist.gui.components.FieldIcon;
 import com.uabart.todolist.gui.components.FieldMainName;
 import com.uabart.todolist.gui.components.GuiButton;
+import com.uabart.todolist.gui.components.MoveGuiButton;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -159,21 +161,10 @@ public class Layout {
         categoryName.w = 100;
         categoryName.h = back.h;
 
-        Button categoryDelete = new GuiButton("x") {
-            @Override
-            public boolean onButtonPress(boolean rightclick) {
-                sendMessage(GuiMessage.DELETE, category);
-                return true;
-            }
-
-            @Override
-            public String getButtonTip() {
-                return "Delete category";
-            }
-        };
+        final Button categoryDelete = new DeleteGuiButton(listener, category, DeleteGuiButton.Type.CATEGORY);
         categoryDelete.x = previousPage.x;
-        categoryDelete.y = categoryName.y;
-        categoryDelete.h = categoryName.h;
+        categoryDelete.y = categoryName.y - 1;
+        categoryDelete.h = 22;
         categoryDelete.w = categoryDelete.contentWidth() + 6;
 
         int count = 0;
@@ -266,9 +257,7 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addTask);
-        if (isShowCategories) {
-            toDraw.add(back);
-        }
+        toDraw.add(back);
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
@@ -323,18 +312,7 @@ public class Layout {
         checkbox.y = mainName.y - 1;
         checkbox.x = previousPage.x;
 
-        Button delete = new GuiButton("x") {
-            @Override
-            public boolean onButtonPress(boolean rightclick) {
-                sendMessage(GuiMessage.DELETE, task);
-                return true;
-            }
-
-            @Override
-            public String getButtonTip() {
-                return "Delete task";
-            }
-        };
+        final Button delete = new DeleteGuiButton(listener, task, DeleteGuiButton.Type.TASK);
         delete.x = checkbox.x;
         delete.y = checkbox.y + checkbox.h;
         delete.h = checkbox.h;
@@ -384,19 +362,7 @@ public class Layout {
                 subCheckbox.y = subName.y - 1;
                 subCheckbox.x = previousPage.x;
 
-                Button subDelete = new GuiButton("x") {
-
-                    @Override
-                    public boolean onButtonPress(boolean rightclick) {
-                        sendMessage(GuiMessage.DELETE, sub);
-                        return true;
-                    }
-
-                    @Override
-                    public String getButtonTip() {
-                        return "Delete sub-task";
-                    }
-                };
+                final Button subDelete = new DeleteGuiButton(listener, sub, DeleteGuiButton.Type.SUBTASK);
                 subDelete.x = subCheckbox.x;
                 subDelete.y = subCheckbox.y + subCheckbox.h;
                 subDelete.h = subCheckbox.h;
@@ -424,10 +390,23 @@ public class Layout {
                 subicon.w = icon.w - 2;
                 subicon.offset = 1;
 
+                final Button subMoveUp = new MoveGuiButton(listener, sub, true);
+                final Button subMoveDown = new MoveGuiButton(listener, sub, false);
+                subMoveUp.x = subName.x + subName.w;
+                subMoveUp.y = subName.y;
+                subMoveUp.h = subName.h / 2;
+                subMoveUp.w = subMoveUp.contentWidth() + 4;
+                subMoveDown.x = subMoveUp.x;
+                subMoveDown.y = subMoveUp.y + subMoveUp.h;
+                subMoveDown.h = subMoveUp.h;
+                subMoveDown.w = subMoveUp.w;
+
                 toDraw.add(subCheckbox);
                 toDraw.add(subDelete);
                 toDraw.add(subicon);
                 toDraw.add(subName);
+                toDraw.add(subMoveUp);
+                toDraw.add(subMoveDown);
                 fieldIcons.add(subicon);
 
                 FieldMainName transpSubName = subName.clone();

@@ -22,6 +22,7 @@ public class Task {
     @XmlElement
     protected List<Task> subtasks;
     private String name;
+    private int moveSymbols;
     private int priority;
     private boolean completed;
     private int itemID, itemDamage;
@@ -36,6 +37,7 @@ public class Task {
     public Task() {
         this.name = "";
         this.priority = 0;
+        this.moveSymbols = 0;
         this.completed = false;
         this.reference = null;
         this.subtasks = new ArrayList<Task>();
@@ -90,6 +92,17 @@ public class Task {
         updateListener();
     }
 
+    public void moveTask(final Task toMove, final boolean isMovingUp) {
+        if (subtasks.size() > 1) {
+            final int moving = isMovingUp ? -1 : 1;
+            final int indexFrom = subtasks.indexOf(toMove);
+            final int indexTo = indexFrom + moving;
+            if (indexTo >= 0 && indexTo < subtasks.size()) {
+                Collections.swap(subtasks, indexFrom, indexTo);
+            }
+        }
+    }
+
     public void addTask(Task toAdd) {
         subtasks.add(toAdd);
     }
@@ -141,4 +154,11 @@ public class Task {
         return obj == this;
     }
 
+    public void setMove(int move) {
+        this.moveSymbols = move;
+    }
+
+    public int getMove() {
+        return moveSymbols;
+    }
 }
