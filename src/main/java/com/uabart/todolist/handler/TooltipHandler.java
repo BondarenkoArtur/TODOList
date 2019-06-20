@@ -5,18 +5,26 @@ import com.uabart.todolist.manager.Manager;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.Widget;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 
 public class TooltipHandler implements IContainerTooltipHandler {
+    private static final int RECIPE_MODE = 0;
 
     @Override
-    public List<String> handleTooltip(GuiContainer guiContainer, int mousex, int mousey, List<String> list) {
-        for (Widget widget : Manager.getLayout().getToDraw())
-            list = widget.handleTooltip(mousex, mousey, list);
-        return list;
+    public List<String> handleTooltip(final GuiContainer guiContainer,
+        final int mouseX, final int mouseY, final List<String> list) {
+        List<String> finalList = new ArrayList<String>();
+        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled()) {
+            for (Widget widget : Manager.getLayout().getToDraw()) {
+                finalList = widget.handleTooltip(mouseX, mouseY, list);
+            }
+        }
+        return finalList;
     }
 
     @Override

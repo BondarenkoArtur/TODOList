@@ -23,10 +23,10 @@ public class DrawHandler implements IContainerDrawHandler {
     }
 
     @Override
-    public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-        if (NEIClientConfig.getCheatMode() == RECIPE_MODE) {
+    public void renderObjects(final GuiContainer gui, final int mouseX, final int mouseY) {
+        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled()) {
             for (Widget widget : Manager.getLayout().getToDraw()) {
-                widget.draw(mousex, mousey);
+                widget.draw(mouseX, mouseY);
             }
         }
     }
