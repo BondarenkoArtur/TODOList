@@ -92,6 +92,17 @@ public class Task {
         updateListener();
     }
 
+    public void moveTask(final Task toMove, final boolean isMovingUp) {
+        if (subtasks.size() > 1) {
+            final int moving = isMovingUp ? -1 : 1;
+            final int indexFrom = subtasks.indexOf(toMove);
+            final int indexTo = indexFrom + moving;
+            if (indexTo >= 0 && indexTo < subtasks.size()) {
+                Collections.swap(subtasks, indexFrom, indexTo);
+            }
+        }
+    }
+
     public void addTask(Task toAdd) {
         subtasks.add(toAdd);
     }

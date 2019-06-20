@@ -143,6 +143,20 @@ public class Logic implements GuiListener {
 
                     break;
 
+                case MOVE_UP:
+                    if (!obj.equals(stack.peek())) {
+                        stack.peek().moveTask((Task) obj, true);
+                        layout.showTask(stack.peek());
+                    }
+                    break;
+
+                case MOVE_DOWN:
+                    if (!obj.equals(stack.peek())) {
+                        stack.peek().moveTask((Task) obj, false);
+                        layout.showTask(stack.peek());
+                    }
+                    break;
+
                 case NEXT_PAGE:
 
                     int c = pages.pop() + 1;

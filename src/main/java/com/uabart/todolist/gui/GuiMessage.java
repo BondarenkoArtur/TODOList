@@ -8,6 +8,8 @@ public enum GuiMessage {
     ADD_TASK,
     ADD_CATEGORY,
     DELETE,
+    MOVE_UP,
+    MOVE_DOWN,
     COMPLETE,
     REFRESH,
     SELECT

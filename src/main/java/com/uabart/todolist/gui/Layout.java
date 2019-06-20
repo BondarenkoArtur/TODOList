@@ -10,6 +10,7 @@ import com.uabart.todolist.gui.components.FieldCompletedCheckbox;
 import com.uabart.todolist.gui.components.FieldIcon;
 import com.uabart.todolist.gui.components.FieldMainName;
 import com.uabart.todolist.gui.components.GuiButton;
+import com.uabart.todolist.gui.components.MoveGuiButton;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -389,10 +390,23 @@ public class Layout {
                 subicon.w = icon.w - 2;
                 subicon.offset = 1;
 
+                final Button subMoveUp = new MoveGuiButton(listener, sub, true);
+                final Button subMoveDown = new MoveGuiButton(listener, sub, false);
+                subMoveUp.x = subName.x + subName.w;
+                subMoveUp.y = subName.y;
+                subMoveUp.h = subName.h / 2;
+                subMoveUp.w = subMoveUp.contentWidth() + 4;
+                subMoveDown.x = subMoveUp.x;
+                subMoveDown.y = subMoveUp.y + subMoveUp.h;
+                subMoveDown.h = subMoveUp.h;
+                subMoveDown.w = subMoveUp.w;
+
                 toDraw.add(subCheckbox);
                 toDraw.add(subDelete);
                 toDraw.add(subicon);
                 toDraw.add(subName);
+                toDraw.add(subMoveUp);
+                toDraw.add(subMoveDown);
                 fieldIcons.add(subicon);
 
                 FieldMainName transpSubName = subName.clone();
