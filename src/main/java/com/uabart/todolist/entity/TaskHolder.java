@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import static codechicken.nei.NEIClientConfig.logger;
+
 @XmlRootElement
 public class TaskHolder {
 
@@ -36,9 +38,13 @@ public class TaskHolder {
 
     private void loadTask(Task task) {
         if (task.getItemID() > 0) {
-            ItemStack stack = new ItemStack(Item.getItemById(task.getItemID()));
-            stack.setItemDamage(task.getItemDamage());
-            task.loadReference(stack);
+            try {
+                ItemStack stack = new ItemStack(Item.getItemById(task.getItemID()));
+                stack.setItemDamage(task.getItemDamage());
+                task.loadReference(stack);
+            } catch (NullPointerException npe) {
+                logger.warn("Cannot load item in ToDoList", npe);
+            }
         }
         for (Task sub : task.listSubtasks())
             loadTask(sub);

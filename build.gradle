@@ -24,7 +24,7 @@ repositories {
 
 apply plugin: 'forge'
 
-version = "1.0.11"
+version = "1.0.12"
 group = "com.uabart.todolist"
 archivesBaseName = "todolist"
 
