@@ -1,5 +1,6 @@
 package com.uabart.todolist.logic;
 
+import com.uabart.todolist.ToDoListMod;
 import com.uabart.todolist.entity.Category;
 import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
@@ -155,6 +156,7 @@ public class Logic implements GuiListener {
                 default:
                     break;
             }
+            ToDoListMod.instance.saveConfig();
         } catch (Exception e) {
             e.printStackTrace();
         }

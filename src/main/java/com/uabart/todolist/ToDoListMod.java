@@ -4,27 +4,17 @@ import com.uabart.todolist.entity.Category;
 import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
-import com.uabart.todolist.gui.Layout;
-import com.uabart.todolist.handler.DrawHandler;
 import com.uabart.todolist.handler.NEIToDoGuiHandler;
 import com.uabart.todolist.handler.OverlayDrawHandler;
 import com.uabart.todolist.manager.Manager;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.io.File;
-
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,25 +22,35 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import codechicken.nei.api.API;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid = ToDoListMod.MODID, version = ToDoListMod.VERSION)
 public class ToDoListMod {
+
     public static final String MODID = "todolist";
     public static final String VERSION = "1.0.12";
 
     @Mod.Instance("todolist")
     public static ToDoListMod instance;
 
-    private Logger logger = null;
+    private Logger logger;
 
     private File configDir;
     private File currentServerConfig;
-
+    private Marshaller marshaller;
+    private Unmarshaller unmarshaller;
 
     @SideOnly(Side.CLIENT)
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
+    public void init(final FMLInitializationEvent event) {
         if (logger == null) {
             logger = LogManager.getLogger(MODID);
         }
@@ -63,19 +63,28 @@ public class ToDoListMod {
 
     @SideOnly(Side.CLIENT)
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInit(final FMLPreInitializationEvent event) {
         Options.load(event);
         configDir = new File(event.getModConfigurationDirectory(), MODID);
-        if(!configDir.exists()) { configDir.mkdir(); }
+        if (!configDir.exists()) {
+            configDir.mkdir();
+        }
+        try {
+            final JAXBContext context = JAXBContext.newInstance(
+                TaskHolder.class, Task.class, Category.class, Category.Any.class);
+            marshaller = context.createMarshaller();
+            unmarshaller = context.createUnmarshaller();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     @SubscribeEvent
-    public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event)
-    {
+    public void onClientConnect(final FMLNetworkEvent.ClientConnectedToServerEvent event) {
         logger.info("Server is starting, loading base settings");
 
-        String serverName;
-        if(event.isLocal) {
+        final String serverName;
+        if (event.isLocal) {
             serverName = Minecraft.getMinecraft().getIntegratedServer().getWorldName() + ".xml";
         } else {
             serverName = FMLClientHandler.instance().getClient().func_147104_D().serverName + ".xml";
@@ -86,15 +95,13 @@ public class ToDoListMod {
 
         if (currentServerConfig.exists()) {
             try {
-                JAXBContext context = JAXBContext.newInstance(TaskHolder.class, Task.class, Category.class, Category.Any.class);
-                Unmarshaller unmarshaller = context.createUnmarshaller();
-                TaskHolder th = (TaskHolder) unmarshaller.unmarshal(currentServerConfig);
-                Manager.getHolder().setCategories(th.getCategories());
-            } catch (Exception e) {
+                final TaskHolder taskHolder = (TaskHolder) unmarshaller.unmarshal(currentServerConfig);
+                Manager.getHolder().setCategories(taskHolder.getCategories());
+            } catch (JAXBException e) {
                 e.printStackTrace();
             }
         } else {
-            TaskHolder empty = new TaskHolder();
+            final TaskHolder empty = new TaskHolder();
             Manager.getHolder().setCategories(empty.getCategories());
         }
         Manager.init();
@@ -102,14 +109,13 @@ public class ToDoListMod {
     }
 
     @SubscribeEvent
-    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    public void onClientDisconnect(final FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         Manager.getLayout().resetLayout();
-        this.logger.info("Saving data");
+        saveConfig();
+    }
 
-        JAXBContext context;
+    public void saveConfig() {
         try {
-            context = JAXBContext.newInstance(TaskHolder.class, Task.class, Category.class, Category.Any.class);
-            Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(Manager.getHolder(), currentServerConfig);
         } catch (JAXBException e) {
