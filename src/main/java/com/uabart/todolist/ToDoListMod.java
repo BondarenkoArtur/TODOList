@@ -4,6 +4,7 @@ import com.uabart.todolist.entity.Category;
 import com.uabart.todolist.entity.Options;
 import com.uabart.todolist.entity.Task;
 import com.uabart.todolist.entity.TaskHolder;
+import com.uabart.todolist.gui.Layout;
 import com.uabart.todolist.handler.DrawHandler;
 import com.uabart.todolist.handler.NEIToDoGuiHandler;
 import com.uabart.todolist.handler.OverlayDrawHandler;
@@ -83,8 +84,6 @@ public class ToDoListMod {
         logger.info(String.format("Server filename is %s", serverName));
         currentServerConfig = new File(configDir, serverName);
 
-        DrawHandler.init = true;
-
         if (currentServerConfig.exists()) {
             try {
                 JAXBContext context = JAXBContext.newInstance(TaskHolder.class, Task.class, Category.class, Category.Any.class);
@@ -98,6 +97,7 @@ public class ToDoListMod {
             TaskHolder empty = new TaskHolder();
             Manager.getHolder().setCategories(empty.getCategories());
         }
+        Manager.init();
         API.registerNEIGuiHandler(new NEIToDoGuiHandler());
     }
 
@@ -105,7 +105,6 @@ public class ToDoListMod {
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         Manager.getLayout().resetLayout();
         this.logger.info("Saving data");
-        DrawHandler.init = true;
 
         JAXBContext context;
         try {

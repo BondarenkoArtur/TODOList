@@ -65,7 +65,7 @@ public class Layout {
         this.listener = listener;
     }
 
-    public void init(GuiContainer gui, TaskHolder holder) {
+    public void init(final TaskHolder holder) {
         this.holder = holder;
         resetLayout();
 

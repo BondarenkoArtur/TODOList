@@ -12,14 +12,9 @@ import codechicken.nei.guihook.IContainerDrawHandler;
 public class DrawHandler implements IContainerDrawHandler {
 
     private static final int RECIPE_MODE = 0;
-    public static boolean init = true;
 
     @Override
-    public void onPreDraw(GuiContainer gui) {
-        if (init) {
-            Manager.init(gui);
-            init = false;
-        }
+    public void onPreDraw(final GuiContainer gui) {
     }
 
     @Override
@@ -32,14 +27,14 @@ public class DrawHandler implements IContainerDrawHandler {
     }
 
     @Override
-    public void postRenderObjects(GuiContainer gui, int mousex, int mousey) {
+    public void postRenderObjects(final GuiContainer gui, final int mousex, final int mousey) {
     }
 
     @Override
-    public void renderSlotUnderlay(GuiContainer gui, Slot slot) {
+    public void renderSlotUnderlay(final GuiContainer gui, final Slot slot) {
     }
 
     @Override
-    public void renderSlotOverlay(GuiContainer gui, Slot slot) {
+    public void renderSlotOverlay(final GuiContainer gui, final Slot slot) {
     }
 }
