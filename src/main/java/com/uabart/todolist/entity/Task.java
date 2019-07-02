@@ -26,6 +26,8 @@ public class Task {
     protected List<Task> subtasks;
     @XmlElement
     protected String tagCompound;
+    @XmlElement
+    private Boolean isSelected;
     private String name;
     private int moveSymbols;
     private int priority;
@@ -65,6 +67,14 @@ public class Task {
     public void setPriority(int priority) {
         this.priority = priority;
         updateListener();
+    }
+
+    public Boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(final Boolean selected) {
+        isSelected = selected;
     }
 
     public boolean isCompleted() {

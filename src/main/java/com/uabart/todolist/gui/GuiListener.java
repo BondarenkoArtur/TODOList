@@ -1,7 +1,9 @@
 package com.uabart.todolist.gui;
 
+import com.uabart.todolist.entity.Task;
+
 public interface GuiListener {
 
-    public void update(GuiMessage message, Object about);
+    void update(GuiMessage message, Task task);
 
 }

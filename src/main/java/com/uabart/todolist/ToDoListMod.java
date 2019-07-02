@@ -103,6 +103,7 @@ public class ToDoListMod {
 
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        Manager.getLayout().resetLayout();
         this.logger.info("Saving data");
         DrawHandler.init = true;
 

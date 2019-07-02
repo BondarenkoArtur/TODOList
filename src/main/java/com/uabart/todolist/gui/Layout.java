@@ -43,6 +43,10 @@ public class Layout {
     private boolean isShowCategories;
 
     public Layout() {
+        resetLayout();
+    }
+
+    public void resetLayout() {
         toDraw = new ArrayList<Widget>();
         toDrawOverlay = new ArrayList<Widget>();
         fieldIcons = new ArrayList<FieldIcon>();
@@ -63,6 +67,7 @@ public class Layout {
 
     public void init(GuiContainer gui, TaskHolder holder) {
         this.holder = holder;
+        resetLayout();
 
         isShowCategories = Options.getInstance().showCategories();
 
