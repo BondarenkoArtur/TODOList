@@ -4,6 +4,9 @@ import com.uabart.todolist.logic.TaskListener;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +24,10 @@ public class Task {
 
     @XmlElement
     protected List<Task> subtasks;
+    @XmlElement
+    protected String tagCompound;
+    @XmlElement
+    private Boolean isSelected;
     private String name;
     private int moveSymbols;
     private int priority;
@@ -62,6 +69,14 @@ public class Task {
         updateListener();
     }
 
+    public Boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(final Boolean selected) {
+        isSelected = selected;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
@@ -88,6 +103,9 @@ public class Task {
         this.reference = reference;
         this.itemID = Item.getIdFromItem(reference.getItem());
         this.itemDamage = reference.getItemDamage();
+        if (reference.getTagCompound() != null) {
+            this.tagCompound = reference.getTagCompound().toString();
+        }
 
         updateListener();
     }
@@ -137,6 +155,18 @@ public class Task {
 
     int getItemDamage() {
         return itemDamage;
+    }
+
+    NBTTagCompound getTagCompound() {
+        NBTTagCompound nbt = null;
+        if (tagCompound != null) {
+            try {
+                nbt = (NBTTagCompound) JsonToNBT.func_150315_a(tagCompound);
+            } catch (NBTException e) {
+                e.printStackTrace();
+            }
+        }
+        return nbt;
     }
 
     public void setItemID(int itemID) {

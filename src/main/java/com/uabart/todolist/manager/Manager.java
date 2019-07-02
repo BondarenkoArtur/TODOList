@@ -5,40 +5,40 @@ import com.uabart.todolist.gui.Layout;
 import com.uabart.todolist.handler.KeyStateTracker;
 import com.uabart.todolist.logic.Logic;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-
-public class Manager {
+public final class Manager {
 
     private static Layout layout;
     private static TaskHolder holder;
     private static Logic logic;
 
-    public static void init(GuiContainer gui) {
+    private Manager() {
+    }
+
+    public static void init() {
         getHolder().init();
-        getLayout().init(gui, getHolder());
+        getLayout().init(getHolder());
         getLogic().init(getLayout(), getHolder());
         KeyStateTracker.load();
     }
 
     public static TaskHolder getHolder() {
-        if (holder == null){
+        if (holder == null) {
             holder = new TaskHolder();
         }
         return holder;
     }
 
     public static Layout getLayout() {
-        if (layout == null){
+        if (layout == null) {
             layout = new Layout();
         }
         return layout;
     }
 
     public static Logic getLogic() {
-        if (logic == null){
+        if (logic == null) {
             logic = new Logic();
         }
         return logic;
     }
-
 }

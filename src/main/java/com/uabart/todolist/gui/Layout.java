@@ -43,6 +43,10 @@ public class Layout {
     private boolean isShowCategories;
 
     public Layout() {
+        resetLayout();
+    }
+
+    public void resetLayout() {
         toDraw = new ArrayList<Widget>();
         toDrawOverlay = new ArrayList<Widget>();
         fieldIcons = new ArrayList<FieldIcon>();
@@ -61,8 +65,9 @@ public class Layout {
         this.listener = listener;
     }
 
-    public void init(GuiContainer gui, TaskHolder holder) {
+    public void init(final TaskHolder holder) {
         this.holder = holder;
+        resetLayout();
 
         isShowCategories = Options.getInstance().showCategories();
 
@@ -257,7 +262,9 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addTask);
-        toDraw.add(back);
+        if (isShowCategories) {
+            toDraw.add(back);
+        }
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
