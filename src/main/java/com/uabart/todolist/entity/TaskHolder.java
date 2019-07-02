@@ -41,6 +41,7 @@ public class TaskHolder {
             try {
                 ItemStack stack = new ItemStack(Item.getItemById(task.getItemID()));
                 stack.setItemDamage(task.getItemDamage());
+                stack.setTagCompound(task.getTagCompound());
                 task.loadReference(stack);
             } catch (NullPointerException npe) {
                 logger.warn("Cannot load item in ToDoList", npe);
