@@ -64,10 +64,16 @@ public class Logic implements GuiListener {
 
     private boolean generateStack(final TaskHolder holder, final Stack<Task> tempStack) {
         boolean isSelected = false;
-        for (int catId = holder.getCategories().size() - 1; catId >= 0; catId--) {
-            if (generateForStack(tempStack, holder.getCategories().get(catId))) {
+        if (isShowCategories) {
+            for (int catId = holder.getCategories().size() - 1; catId >= 0; catId--) {
+                if (generateForStack(tempStack, holder.getCategories().get(catId))) {
+                    isSelected = true;
+                    break;
+                }
+            }
+        } else {
+            if (generateForStack(tempStack, holder.getCategories().get(0))) {
                 isSelected = true;
-                break;
             }
         }
         return isSelected;
