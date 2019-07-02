@@ -257,7 +257,9 @@ public class Layout {
         toDraw.add(previousPage);
         toDraw.add(nextPage);
         toDraw.add(addTask);
-        toDraw.add(back);
+        if (isShowCategories) {
+            toDraw.add(back);
+        }
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
