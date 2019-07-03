@@ -24,6 +24,7 @@ import java.util.List;
 import codechicken.nei.Button;
 import codechicken.nei.ItemPanel;
 import codechicken.nei.LayoutManager;
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.TextField;
 import codechicken.nei.Widget;
@@ -474,7 +475,8 @@ public class Layout {
 
     private void onClick(int mouseX, int mouseY, Task task, FieldIcon icon) {
         if (icon.changing)
-            if (LayoutManager.itemPanel.contains(mouseX, mouseY)) {
+            if (LayoutManager.itemPanel.contains(mouseX, mouseY)
+                && (!NEIClientConfig.isHidden() && NEIClientConfig.isEnabled())) {
                 ItemPanel.ItemPanelSlot item = LayoutManager.itemPanel.getSlotMouseOver(mouseX, mouseY);
                 if (item != null) {
                     ItemStack stack = item.item;
@@ -490,7 +492,7 @@ public class Layout {
                 GuiContainer guiContainer = mc.currentScreen instanceof GuiContainer ? (GuiContainer) mc.currentScreen : null;
                 if (guiContainer != null) {
                     Slot slot = GuiContainerManager.getSlotMouseOver(guiContainer);
-                    if (slot != null) {
+                    if (slot != null && slot.getStack() != null) {
                         ItemStack stack = slot.getStack();
                         stack.stackSize = 1;
                         task.setReference(stack);
