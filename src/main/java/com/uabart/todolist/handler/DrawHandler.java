@@ -19,7 +19,7 @@ public class DrawHandler implements IContainerDrawHandler {
 
     @Override
     public void renderObjects(final GuiContainer gui, final int mouseX, final int mouseY) {
-        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled()) {
+        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled() || NEIClientConfig.isHidden()) {
             for (Widget widget : Manager.getLayout().getToDraw()) {
                 widget.draw(mouseX, mouseY);
             }

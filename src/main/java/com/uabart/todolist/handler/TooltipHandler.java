@@ -19,7 +19,7 @@ public class TooltipHandler implements IContainerTooltipHandler {
     public List<String> handleTooltip(final GuiContainer guiContainer,
         final int mouseX, final int mouseY, final List<String> list) {
         List<String> finalList = new ArrayList<String>();
-        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled()) {
+        if (NEIClientConfig.getCheatMode() == RECIPE_MODE || !NEIClientConfig.isEnabled() || NEIClientConfig.isHidden()) {
             for (Widget widget : Manager.getLayout().getToDraw()) {
                 finalList = widget.handleTooltip(mouseX, mouseY, list);
             }
