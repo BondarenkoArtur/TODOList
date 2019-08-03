@@ -151,6 +151,11 @@ public class Layout {
         sendMessage(GuiMessage.REFRESH);
     }
 
+    public void toggleOverlayHidden() {
+        Options.getInstance().setOverlayVisible(!Options.getInstance().getOverlayVisible());
+        sendMessage(GuiMessage.REFRESH);
+    }
+
     public void showCategory(final Category category, int currentPage) {
         // Clear current screen
         toDraw.clear();
@@ -269,6 +274,9 @@ public class Layout {
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
+            toDrawOverlay.clear();
+        }
+        if (!Options.getInstance().getOverlayVisible()) {
             toDrawOverlay.clear();
         }
         toDraw.add(showHideButton);
@@ -469,6 +477,9 @@ public class Layout {
             toDraw.clear();
             toDrawOverlay.clear();
         }
+        if (!Options.getInstance().getOverlayVisible()) {
+            toDrawOverlay.clear();
+        }
         toDraw.add(showHideButton);
 
     }
@@ -553,6 +564,9 @@ public class Layout {
 
         if (!Options.getInstance().getVisible()) {
             toDraw.clear();
+            toDrawOverlay.clear();
+        }
+        if (!Options.getInstance().getOverlayVisible()) {
             toDrawOverlay.clear();
         }
         toDraw.add(showHideButton);

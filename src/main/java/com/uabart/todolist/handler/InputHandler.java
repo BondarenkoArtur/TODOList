@@ -2,6 +2,7 @@ package com.uabart.todolist.handler;
 
 import com.uabart.todolist.manager.Manager;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 import codechicken.nei.Widget;
@@ -24,7 +25,11 @@ public class InputHandler implements IContainerInputHandler {
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
         if (keyID == DEFAULT_KEY) {
-            Manager.getLayout().toggleMenuHidden();
+            if (GuiScreen.isCtrlKeyDown()) {
+                Manager.getLayout().toggleOverlayHidden();
+            } else {
+                Manager.getLayout().toggleMenuHidden();
+            }
         }
         for (Widget widget : Manager.getLayout().getToDraw()) {
             if (widget.handleKeyPress(keyID, keyChar)) return true;

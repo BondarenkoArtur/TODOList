@@ -5,6 +5,7 @@ import com.uabart.todolist.manager.Manager;
 import codechicken.nei.KeyManager;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.API;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.Minecraft;
 
 import static com.uabart.todolist.entity.Options.DEFAULT_KEY;
@@ -15,7 +16,11 @@ public class KeyStateTracker implements IKeyStateTracker {
     public void tickKeyStates() {
         if (Minecraft.getMinecraft().currentScreen == null) {
             if (KeyManager.keyStates.get(KEY_IDENTIFIER).down) {
-                Manager.getLayout().toggleMenuHidden();
+                if (GuiScreen.isCtrlKeyDown()) {
+                    Manager.getLayout().toggleOverlayHidden();
+                } else {
+                    Manager.getLayout().toggleMenuHidden();
+                }
             }
         }
     }
